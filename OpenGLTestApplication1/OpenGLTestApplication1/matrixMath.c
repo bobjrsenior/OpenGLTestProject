@@ -132,7 +132,7 @@ mat4* perspective(const GLfloat fov, const GLfloat aspectRatio, const GLfloat ne
 	temp->w[0] = 0;
 	temp->w[1] = 0;
 	temp->w[2] = -(2 * farClip * nearClip) / (farClip - nearClip);
-	temp->w[3] = 1;
+	temp->w[3] = 0;
 
 	return temp;
 }
