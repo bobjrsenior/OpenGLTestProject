@@ -80,7 +80,7 @@ int main(void)
 	GLFWwindow* window;
 
 	//Create a window and create its OpenGL context  
-	window = glfwCreateWindow(640, 480, "Test Window", NULL, NULL);
+	window = glfwCreateWindow(800, 600, "Test Window", NULL, NULL);
 
 	//If the window couldn't be created  
 	if (!window)
