@@ -198,7 +198,7 @@ int main(void)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	/*glActiveTexture(GL_TEXTURE1);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, textures[1]);
 	image = SOIL_load_image("sample2.png", &width, &height, 0, SOIL_LOAD_RGB);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
@@ -209,7 +209,7 @@ int main(void)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	*/
+	
 	//Transformations
 	
 	//printf("X: %f\nY: %f\nZ: %f\n", trans.arr[0], trans.arr[5], trans.arr[10]);
@@ -228,60 +228,31 @@ int main(void)
 	
 	GLint uniTime = glGetUniformLocation(shaderProgram, "time");
 
-	GLfloat test = *(GLfloat*)malloc(sizeof(GLfloat));
-	test = 45.0f;
-	printf("%f : %f\n", degToRadCos(test), degToRadSin(test));
+	//GLfloat test = *(GLfloat*)malloc(sizeof(GLfloat));
+	//test = 45.0f;
+	//printf("%f : %f\n", degToRadCos(test), degToRadSin(test));
 	//printVec3(normalizeNewVec3(makeVec3(3, 2, 7)));
 	//printVec3(normalizeNewVec3(makeVec3(11, 4, 1)));
 
 	//Main Loop  
 	do
 	{
-		float ratio;
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / (float)height;
+		//float ratio;
+		//int width, height;
+		//glfwGetFramebufferSize(window, &width, &height);
+		//ratio = width / (float)height;
 
-		glViewport(0, 0, width, height);
+		//glViewport(0, 0, width, height);
 
 		//Clear color buffer  
 		glClear(GL_COLOR_BUFFER_BIT);
 		//glClearColor((float)rand() / (float)RAND_MAX, (float)rand() / (float)RAND_MAX, (float)rand() / (float)RAND_MAX, 1.0f);
 		
 		movement(&chars[0]);
-		//render(&ratio);
-		//Rendering
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glRotatef((float)glfwGetTime() * chars[0].rotation, 0.0f, 0.f, 1.0f);
-
-		//Set color of and draw the triangle
-		glUniform3f(colAttrib, 1.0f, 0.0f, 0.0f);
-		glUniform1f(uniTime, glfwGetTime());
 		mat4* model;
 		model = rotateMat4(glfwGetTime() * 180.0f, makeVec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniTrans, 1, GL_FALSE, model);
-		//glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm:value_ptr(trans));
-		//glDrawArrays(GL_TRIANGLES, 0, 3); //For non buffered/index drawing
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-
-		for (int e = 0; e < 0; e++){
-			glBegin(GL_QUADS);
-			glColor3f(1.f, 0.f, 0.f);
-			glVertex3f(chars[e].x1, chars[e].y1, 0.f);
-			glColor3f(0.f, 1.f, 0.f);
-			glVertex3f(chars[e].x1, chars[e].y2, 0.f);
-			glColor3f(0.f, 0.f, 1.f);
-			glVertex3f(chars[e].x2, chars[e].y2, 0.f);
-			glColor3f(0.f, 0.f, 1.f);
-			glVertex3f(chars[e].x2, chars[e].y1, 0.f);
-			glEnd();
-		}
-
 
 		//Swap buffers  
 		glfwSwapBuffers(window);
@@ -297,35 +268,6 @@ int main(void)
 	glfwTerminate();
 
 	exit(EXIT_SUCCESS);
-}
-
-//Rendering
-void render(const float *ratio){
-	//Rendering
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-*ratio, *ratio, -1.f, 1.f, 1.f, -1.f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glRotatef((float)glfwGetTime() * chars[0].rotation, 0.0f, 0.f, 1.0f);
-	
-	//Set color of and draw the triangle
-	//glUniform3f(uniColor, 1.0f, 0.0f, 0.0f);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
-
-	for (int e = 0; e < 0; e++){
-		glBegin(GL_QUADS);
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(chars[e].x1, chars[e].y1, 0.f);
-		glColor3f(0.f, 1.f, 0.f);
-		glVertex3f(chars[e].x1, chars[e].y2, 0.f);
-		glColor3f(0.f, 0.f, 1.f);
-		glVertex3f(chars[e].x2, chars[e].y2, 0.f);
-		glColor3f(0.f, 0.f, 1.f);
-		glVertex3f(chars[e].x2, chars[e].y1, 0.f);
-		glEnd();
-	}
 }
 
 //Character
