@@ -82,30 +82,34 @@ mat4* lookAtMat4(const vec3* camera, const vec3* target, const vec3* upVector){
 	vec3* f = subVec3(target, camera);
 	normalizeVec3(f);
 	
-	vec3* s = crossVec3(upVector, f);
+	vec3* s = crossVec3(f, upVector);
 	normalizeVec3(s);
 
-	vec3* u = crossVec3(f, s);
+	vec3* u = crossVec3(s, f);
 
 	temp->x[0] = s->arr[0];
 	temp->x[1] = u->arr[0];
-	temp->x[2] = f->arr[0];
-	temp->x[3] = 1;
+	temp->x[2] = -f->arr[0];
+	temp->x[3] = 0;
 
 	temp->y[0] = s->arr[1];
 	temp->y[1] = u->arr[1];
-	temp->y[2] = f->arr[1];
-	temp->y[3] = 1;
+	temp->y[2] = -f->arr[1];
+	temp->y[3] = 0;
 
 	temp->z[0] = s->arr[2];
 	temp->z[1] = u->arr[2];	
-	temp->z[2] = f->arr[2];
-	temp->z[3] = 1;
+	temp->z[2] = -f->arr[2];
+	temp->z[3] = 0;
 
 	temp->w[0] = -dotVec3(s, camera);
 	temp->w[1] = -dotVec3(u, camera);
-	temp->w[2] = -dotVec3(f, camera);
+	temp->w[2] = dotVec3(f, camera);
 	temp->w[3] = 1;
+
+	free(f);
+	free(u);
+	free(s);
 	return temp;
 }
 
@@ -126,14 +130,15 @@ mat4* perspective(const GLfloat fov, const GLfloat aspectRatio, const GLfloat ne
 
 	temp->z[0] = 0;
 	temp->z[1] = 0;
-	temp->z[2] = (farClip + nearClip) / (farClip - nearClip);
-	temp->z[3] = 1;
+	temp->z[2] = -(farClip + nearClip) / (farClip - nearClip);
+	temp->z[3] = -1.0f;
 
 	temp->w[0] = 0;
 	temp->w[1] = 0;
-	temp->w[2] = -(2 * farClip * nearClip) / (farClip - nearClip);
+	temp->w[2] = -(2.0f * farClip * nearClip) / (farClip - nearClip);
 	temp->w[3] = 0;
 
+	//free(&tanHalfFov);
 	return temp;
 }
 

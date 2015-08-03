@@ -213,18 +213,18 @@ int main(void)
 	//Transformations
 	
 	//printf("X: %f\nY: %f\nZ: %f\n", trans.arr[0], trans.arr[5], trans.arr[10]);
-	GLint uniTrans = glGetUniformLocation(shaderProgram, "model");
+	GLint uniModel = glGetUniformLocation(shaderProgram, "model");
 
 	//
 	mat4* view = lookAtMat4(makeVec3(1.2f, 1.2f, 1.2f),
 		makeVec3(0.0f, 0.0f, 0.0f),
 		makeVec3(0.0f, 0.0f, 1.0f));
 	GLint uniView = glGetUniformLocation(shaderProgram, "view");
-	glUniformMatrix4fv(uniView, 1, GL_FALSE, &view);
+	glUniformMatrix4fv(uniView, 1, GL_FALSE, view);
 
 	mat4* proj = perspective(45.0f, 800.0f / 600.0f, 1.0f, 10.0f);
 	GLint uniProj = glGetUniformLocation(shaderProgram, "proj");
-	glUniformMatrix4fv(uniProj, 1, GL_FALSE, &proj);
+	glUniformMatrix4fv(uniProj, 1, GL_FALSE, proj);
 	
 	GLint uniTime = glGetUniformLocation(shaderProgram, "time");
 
@@ -245,13 +245,14 @@ int main(void)
 		//glViewport(0, 0, width, height);
 
 		//Clear color buffer  
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//glClearColor((float)rand() / (float)RAND_MAX, (float)rand() / (float)RAND_MAX, (float)rand() / (float)RAND_MAX, 1.0f);
 		
 		movement(&chars[0]);
 		mat4* model;
 		model = rotateMat4(glfwGetTime() * 180.0f, makeVec3(0.0f, 0.0f, 1.0f));
-		glUniformMatrix4fv(uniTrans, 1, GL_FALSE, model);
+		glUniformMatrix4fv(uniModel, 1, GL_FALSE, model);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		//Swap buffers  
